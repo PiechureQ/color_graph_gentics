@@ -58,7 +58,7 @@ class GraphColoringTests(unittest.TestCase):
     def test(self):
         states = load_data("adjacent_states.csv")
         rules = build_rules(states)
-        optimalValue = len(rules) - 10 
+        optimalValue = len(rules) - 7 
         stateIndexLookup = {key: index
                             for index, key in enumerate(sorted(states))}
 
@@ -79,13 +79,15 @@ class GraphColoringTests(unittest.TestCase):
         self.assertTrue(not optimalValue > best.Fitness)
 
         keys = sorted(states.keys())
+        text = ''
         for index in range(len(states)):
             print(keys[index] + " is " + colorLookup[best.Genes[index]])
-            print(keys[index] + ":" + "{name: 'State', description: 'default', color: '" + colorLookup[best.Genes[index]] + "',  hover_color: 'default', url: 'default'},")
-            textfile = open("colorData.js", "a")
-            textfile.write("simplemaps_usmap_mapdata.state_specific." + keys[index] + ".color = " + '"' + colorLookup[best.Genes[index]] + '"' + "; \n")
-            textfile.close()
 
+            text += "simplemaps_usmap_mapdata.state_specific." + keys[index] + ".color = " + '"' + colorLookup[best.Genes[index]] + '"' + "; \n"
+
+        textfile = open("colorData.js", "w")
+        textfile.write(text)
+        textfile.close()
         #webUrl = urllib.request.urlopen('https://www.javatpoint.com/python-tutorial')
         webbrowser.open('file://{}/test.html'.format(os.getcwd()))
 
