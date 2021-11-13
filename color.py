@@ -1,7 +1,9 @@
+import os
 import csv
 import unittest
 import datetime
 import genetic
+import webbrowser
 
 def load_data(fileName):
     with open(fileName, mode = 'r') as infile:
@@ -79,6 +81,13 @@ class GraphColoringTests(unittest.TestCase):
         keys = sorted(states.keys())
         for index in range(len(states)):
             print(keys[index] + " is " + colorLookup[best.Genes[index]])
+            print(keys[index] + ":" + "{name: 'State', description: 'default', color: '" + colorLookup[best.Genes[index]] + "',  hover_color: 'default', url: 'default'},")
+            textfile = open("colorData.js", "a")
+            textfile.write("simplemaps_usmap_mapdata.state_specific." + keys[index] + ".color = " + '"' + colorLookup[best.Genes[index]] + '"' + "; \n")
+            textfile.close()
+
+        #webUrl = urllib.request.urlopen('https://www.javatpoint.com/python-tutorial')
+        webbrowser.open('file://{}/test.html'.format(os.getcwd()))
 
 def display(candidate, startTime):
     timeDiff = datetime.datetime.now() - startTime
